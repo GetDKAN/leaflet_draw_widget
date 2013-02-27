@@ -11,19 +11,26 @@
             var id = $(item).attr('id'),
             options = settings.leaflet_widget_widget[id];
 
-            //var map = L.map('map').setView([37.8, -96], 4);
             var map = L.map(id, options.map);
 
-            // For testing. TODO: remove.
-            //var cloudmade = L.tileLayer('http://{s}.tile.cloudmade.com/{key}/{styleId}/256/{z}/{x}/{y}.png', {
-             // attribution: 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
-             // key: 'BC9A493B41014CAABB98F0471D759707',
-             // styleId: 998
-            //}).addTo(map);
+            L.tileLayer(options.map.base_url).addTo(map);
 
-            var Items = new L.FeatureGroup().addTo(map);
+            var current = $('#' + id + '-input').val();
+
+            var geojson = L.geoJson(JSON.parse(current))
+            layers = Array();
+            for (var key in geojson._layers) {
+              layers.push(geojson._layers[key]);
+             }
+
+            var Items = new L.FeatureGroup(layers).addTo(map);
+            // Autocenter if that's cool.
+            if (options.map.auto_center) {
+              map.fitBounds(Items.getBounds());
+            }
 
             var drawControl = new L.Control.Draw({
+                autocenter: true,
                 draw: {
                   position: 'topleft',
                   polygon: {
@@ -37,7 +44,6 @@
                       color: '#bada55'
                     }
                   },
-                  // TODO: Make this an option.
                   circle: false       },
                 edit: {
                   featureGroup: Items
@@ -48,27 +54,85 @@
               map.addControl(drawControl);
 
               map.on('draw:created', function (e) {
-                var type = e.layerType,
+                var type = e.layerTypee,
                   layer = e.layer;
-
-                // Grabbing map values, ignoring the first two layers which are the controls.
-                // TODO: Will move into function that will fire upon submit.
-                var i = 1;
-                var x = 0;
-                for (var key in map._layers) {
-                  if (x > i) {
-                    console.log(map._layers[key]);
-                  }
-                  x++;
-                }
+                // Remove already created layers. We only want to save one
+                // per field.
+                leafletWidgetLayerRemove(map._layers, Items);
+                // Add new layer.
                 Items.addLayer(layer);
+                //leafletWidgetFormWrite(map._layers, id);
               });
 
-            // TODO: Need to add a function to grab map values upon submit.
-            //$(item).parents('form').bind('submit', $.proxy(map.widget.write, map.widget));
+            //$(item).parents('form').bind('submit', leafletWidgetFormWrite(map._layers, id));
+            $(item).parents('form').submit(function(event){
+              leafletWidgetFormWrite(map._layers, id)
+            });
 
             Drupal.leaflet_widget[id] = map;
         });
     }
+
+    function leafletWidgetFormWrite(layers, id) {
+      var write  = Array();
+      for (var key in layers) {
+        if (layers[key]._latlngs) {
+          write.push(layerToGeometry(layers[key]));
+        }
+      }
+      console.log(write);
+      $('#' + id + '-input').val(write);
+    }
+
+    function leafletWidgetLayerRemove(layers, Items) {
+      for (var key in layers) {
+        if (layers[key]._latlngs) {
+          Items.removeLayer(layers[key]);
+        }
+      }
+    }
+
+  var layerToGeometry = function(layer) {
+    var json, type, latlng, latlngs = [], i;
+
+    if (L.Marker && (layer instanceof L.Marker)) {
+      type = 'Point';
+      latlng = LatLngToCoords(layer._latlng);
+      return JSON.stringify({"type": type, "coordinates": latlng});
+
+    } else if (L.Polygon && (layer instanceof L.Polygon)) {
+      type = 'Polygon';
+      latlngs = LatLngsToCoords(layer._latlngs, 1);
+      return JSON.stringify({"type": type, "coordinates": [latlngs]});
+
+    } else if (L.Polyline && (layer instanceof L.Polyline)) {
+      type = 'LineString';
+      latlngs = LatLngsToCoords(layer._latlngs);
+      return JSON.stringify({"type": type, "coordinates": latlngs});
+
+    }
+  }
+
+  var LatLngToCoords = function (LatLng, reverse) { // (LatLng, Boolean) -> Array
+    var lat = parseFloat(reverse ? LatLng.lng : LatLng.lat),
+      lng = parseFloat(reverse ? LatLng.lat : LatLng.lng);
+
+    return [lng,lat];
+  }
+
+  var LatLngsToCoords = function (LatLngs, levelsDeep, reverse) { // (LatLngs, Number, Boolean) -> Array
+    var coord,
+      coords = [],
+      i, len;
+
+    for (i = 0, len = LatLngs.length; i < len; i++) {
+        coord = levelsDeep ?
+                LatLngToCoords(LatLngs[i], levelsDeep - 1, reverse) :
+                LatLngToCoords(LatLngs[i], reverse);
+        coords.push(coord);
+    }
+
+    return coords;
+  }
 
 }(jQuery));

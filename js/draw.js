@@ -10,23 +10,43 @@
         $('.leaflet-widget').once().each(function(i, item) {
             var id = $(item).attr('id'),
             options = settings.leaflet_widget_widget[id];
+            if (true) {
+              $('#' + id + '-input').before('<div class="map" id="' + id + '-toggle">Click to import manually.</div>');
+              $('#' + id + '-toggle').click(function () {
+                $(item).toggle();
+                if ($(this).hasClass('map')) {
+                  $(this).text('Click to use map');
+                  $(this).removeClass('map');
+                  $('#' + id + '-input').get(0).type = 'text';
+                }
+                else {
+                  $(this).text('Click to import manually');
+                  $('#' + id + '-input').get(0).type = 'hidden';
+                  $(this).addClass('map');
+                }
+              });
 
+            }
             var map = L.map(id, options.map);
 
             L.tileLayer(options.map.base_url).addTo(map);
 
             var current = $('#' + id + '-input').val();
-
-            var geojson = L.geoJson(JSON.parse(current))
-            layers = Array();
-            for (var key in geojson._layers) {
-              layers.push(geojson._layers[key]);
-             }
+            current = JSON.parse(current);
+            var layers = Array();
+            if (current.features.length) {
+              var geojson = L.geoJson(current)
+              for (var key in geojson._layers) {
+                layers.push(geojson._layers[key]);
+               }
+            }
 
             var Items = new L.FeatureGroup(layers).addTo(map);
             // Autocenter if that's cool.
             if (options.map.auto_center) {
-              map.fitBounds(Items.getBounds());
+              if (current.features.length) {
+                map.fitBounds(Items.getBounds());
+              }
             }
 
             var drawControl = new L.Control.Draw({
@@ -44,7 +64,11 @@
                       color: '#bada55'
                     }
                   },
-                  circle: false       },
+                  // TODO: Make an option.
+                  circle: false,
+                  marker: false,
+                  polyline: false
+                },
                 edit: {
                   featureGroup: Items
                 }
@@ -61,13 +85,13 @@
                 leafletWidgetLayerRemove(map._layers, Items);
                 // Add new layer.
                 Items.addLayer(layer);
-                //leafletWidgetFormWrite(map._layers, id);
               });
 
-            //$(item).parents('form').bind('submit', leafletWidgetFormWrite(map._layers, id));
-            $(item).parents('form').submit(function(event){
-              leafletWidgetFormWrite(map._layers, id)
-            });
+              $(item).parents('form').submit(function(event){
+                if ($('#' + id + '-toggle').hasClass('map')) {
+                  leafletWidgetFormWrite(map._layers, id)
+                }
+              });
 
             Drupal.leaflet_widget[id] = map;
         });
@@ -80,8 +104,10 @@
           write.push(layerToGeometry(layers[key]));
         }
       }
-      console.log(write);
-      $('#' + id + '-input').val(write);
+      // Only save if there is a value.
+      if (write.length) {
+        $('#' + id + '-input').val(write);
+      }
     }
 
     function leafletWidgetLayerRemove(layers, Items) {

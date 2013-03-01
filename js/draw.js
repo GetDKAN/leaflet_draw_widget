@@ -10,8 +10,9 @@
         $('.leaflet-widget').once().each(function(i, item) {
             var id = $(item).attr('id'),
             options = settings.leaflet_widget_widget[id];
-            if (true) {
-              $('#' + id + '-input').before('<div class="map" id="' + id + '-toggle">Click to import manually.</div>');
+            console.log(options);
+            if (options.toggle) {
+              $('#' + id + '-input').before('<div class="map" style="cursor: pointer;" id="' + id + '-toggle">Click to add data manually</div>');
               $('#' + id + '-toggle').click(function () {
                 $(item).toggle();
                 if ($(this).hasClass('map')) {
@@ -20,7 +21,7 @@
                   $('#' + id + '-input').get(0).type = 'text';
                 }
                 else {
-                  $(this).text('Click to import manually');
+                  $(this).text('Click to add data manually');
                   $('#' + id + '-input').get(0).type = 'hidden';
                   $(this).addClass('map');
                 }
@@ -97,6 +98,9 @@
         });
     }
 
+    /**
+     * Writes layer to input field if there is a layer to write.
+     */
     function leafletWidgetFormWrite(layers, id) {
       var write  = Array();
       for (var key in layers) {
@@ -110,6 +114,9 @@
       }
     }
 
+    /**
+     * Removes layers that are already on the map.
+     */
     function leafletWidgetLayerRemove(layers, Items) {
       for (var key in layers) {
         if (layers[key]._latlngs) {
@@ -118,47 +125,47 @@
       }
     }
 
-  var layerToGeometry = function(layer) {
-    var json, type, latlng, latlngs = [], i;
+    var layerToGeometry = function(layer) {
+      var json, type, latlng, latlngs = [], i;
 
-    if (L.Marker && (layer instanceof L.Marker)) {
-      type = 'Point';
-      latlng = LatLngToCoords(layer._latlng);
-      return JSON.stringify({"type": type, "coordinates": latlng});
+      if (L.Marker && (layer instanceof L.Marker)) {
+        type = 'Point';
+        latlng = LatLngToCoords(layer._latlng);
+        return JSON.stringify({"type": type, "coordinates": latlng});
 
-    } else if (L.Polygon && (layer instanceof L.Polygon)) {
-      type = 'Polygon';
-      latlngs = LatLngsToCoords(layer._latlngs, 1);
-      return JSON.stringify({"type": type, "coordinates": [latlngs]});
+      } else if (L.Polygon && (layer instanceof L.Polygon)) {
+        type = 'Polygon';
+        latlngs = LatLngsToCoords(layer._latlngs, 1);
+        return JSON.stringify({"type": type, "coordinates": [latlngs]});
 
-    } else if (L.Polyline && (layer instanceof L.Polyline)) {
-      type = 'LineString';
-      latlngs = LatLngsToCoords(layer._latlngs);
-      return JSON.stringify({"type": type, "coordinates": latlngs});
+      } else if (L.Polyline && (layer instanceof L.Polyline)) {
+        type = 'LineString';
+        latlngs = LatLngsToCoords(layer._latlngs);
+        return JSON.stringify({"type": type, "coordinates": latlngs});
 
-    }
-  }
-
-  var LatLngToCoords = function (LatLng, reverse) { // (LatLng, Boolean) -> Array
-    var lat = parseFloat(reverse ? LatLng.lng : LatLng.lat),
-      lng = parseFloat(reverse ? LatLng.lat : LatLng.lng);
-
-    return [lng,lat];
-  }
-
-  var LatLngsToCoords = function (LatLngs, levelsDeep, reverse) { // (LatLngs, Number, Boolean) -> Array
-    var coord,
-      coords = [],
-      i, len;
-
-    for (i = 0, len = LatLngs.length; i < len; i++) {
-        coord = levelsDeep ?
-                LatLngToCoords(LatLngs[i], levelsDeep - 1, reverse) :
-                LatLngToCoords(LatLngs[i], reverse);
-        coords.push(coord);
+      }
     }
 
-    return coords;
-  }
+    var LatLngToCoords = function (LatLng, reverse) { // (LatLng, Boolean) -> Array
+      var lat = parseFloat(reverse ? LatLng.lng : LatLng.lat),
+        lng = parseFloat(reverse ? LatLng.lat : LatLng.lng);
+
+      return [lng,lat];
+    }
+
+    var LatLngsToCoords = function (LatLngs, levelsDeep, reverse) { // (LatLngs, Number, Boolean) -> Array
+      var coord,
+        coords = [],
+        i, len;
+
+      for (i = 0, len = LatLngs.length; i < len; i++) {
+          coord = levelsDeep ?
+                  LatLngToCoords(LatLngs[i], levelsDeep - 1, reverse) :
+                  LatLngToCoords(LatLngs[i], reverse);
+          coords.push(coord);
+      }
+
+      return coords;
+    }
 
 }(jQuery));

@@ -23,6 +23,13 @@ function leaflet_widget_field_widget_info() {
         'auto_center' => TRUE,
         'zoom' => 10,
       ),
+      'toggle' => '',
+      'draw' => array(
+        'polyline' => TRUE,
+        'polygon' => TRUE,
+        'circle' => TRUE,
+        'marker' => TRUE,
+      ),
     ),
     'behaviors' => array(
       'multiple values' => FIELD_BEHAVIOR_CUSTOM,
@@ -65,12 +72,6 @@ function leaflet_widget_field_widget_settings_form($field, $instance) {
         '#default_value' => $settings['map']['center']['lng'],
         '#required' => TRUE,
       );
-      $form['map']['toggle'] = array(
-        '#type' => 'checkbox',
-        '#title' => 'Allow users option to input values directly.',
-        '#description' => "When checked this option allows users to add to input form directly instead of using the map.",
-        '#default_value' => $settings['map']['toggle'],
-      );
       $form['map']['auto_center'] = array(
         '#type' => 'checkbox',
         '#title' => 'Automatically center map on existing features',
@@ -83,7 +84,31 @@ function leaflet_widget_field_widget_settings_form($field, $instance) {
         '#default_value' => $settings['map']['zoom'],
         '#required' => TRUE,
       );
+      $form['toggle'] = array(
+        '#type' => 'checkbox',
+        '#title' => 'Allow users option to input values directly.',
+        '#description' => "When checked this option allows users to add to input form directly instead of using the map.",
+        '#default_value' => $settings['toggle'],
+      );
+      $form['draw'] = array(
+        '#type' => 'fieldset',
+        '#title' => 'Default Leaflet.draw settings',
+      );
+      $options = array(
+        'polyline' => t('Polyline'),
+        'polygon' => t('Polygon'),
+        'circle' => t('Circle'),
+        'marker' => t('Marker'),
+      );
+      $form['draw']['tools'] = array(
+        '#type' => 'checkboxes',
+        '#title' => 'Tools to include on the map.',
+        '#description' => "Decide which tools you want to add. Defaults to all.",
+        '#value' => $settings['draw']['tools'],
+        '#options' => $options,
+      );
       break;
+
   }
 
   return $form;

@@ -10,7 +10,6 @@
         $('.leaflet-widget').once().each(function(i, item) {
             var id = $(item).attr('id'),
             options = settings.leaflet_widget_widget[id];
-            console.log(options);
             if (options.toggle) {
               $('#' + id + '-input').before('<div class="map" style="cursor: pointer;" id="' + id + '-toggle">Click to add data manually</div>');
               $('#' + id + '-toggle').click(function () {
@@ -66,9 +65,9 @@
                     }
                   },
                   // TODO: Make an option.
-                  circle: false,
-                  marker: false,
-                  polyline: false
+                  circle: options.draw.tools.circle,
+                  marker: options.draw.tools.marker,
+                  polyline: options.draw.tools.polyline
                 },
                 edit: {
                   featureGroup: Items
@@ -104,7 +103,7 @@
     function leafletWidgetFormWrite(layers, id) {
       var write  = Array();
       for (var key in layers) {
-        if (layers[key]._latlngs) {
+        if (layers[key]._latlngs || layers[key]._latlng) {
           write.push(layerToGeometry(layers[key]));
         }
       }
@@ -119,12 +118,14 @@
      */
     function leafletWidgetLayerRemove(layers, Items) {
       for (var key in layers) {
-        if (layers[key]._latlngs) {
+        if (layers[key]._latlngs || layers[key]._latlng) {
           Items.removeLayer(layers[key]);
         }
       }
     }
 
+    // This will all go away once this gets into leaflet main branch:
+    // https://github.com/jfirebaugh/Leaflet/commit/4bc36d4c1926d7c68c966264f3cbf179089bd998
     var layerToGeometry = function(layer) {
       var json, type, latlng, latlngs = [], i;
 

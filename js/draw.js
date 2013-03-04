@@ -11,16 +11,16 @@
             var id = $(item).attr('id'),
             options = settings.leaflet_widget_widget[id];
             if (options.toggle) {
-              $('#' + id + '-input').before('<div class="map" style="cursor: pointer;" id="' + id + '-toggle">Click to add data manually</div>');
+              $('#' + id + '-input').before('<div class="map" style="cursor: pointer;" id="' + id + '-toggle">Add data manually</div>');
               $('#' + id + '-toggle').click(function () {
                 $(item).toggle();
                 if ($(this).hasClass('map')) {
-                  $(this).text('Click to use map');
+                  $(this).text('Use map');
                   $(this).removeClass('map');
                   $('#' + id + '-input').get(0).type = 'text';
                 }
                 else {
-                  $(this).text('Click to add data manually');
+                  $(this).text('Add data manually');
                   $('#' + id + '-input').get(0).type = 'hidden';
                   $(this).addClass('map');
                 }
@@ -53,20 +53,10 @@
                 autocenter: true,
                 draw: {
                   position: 'topleft',
-                  polygon: {
-                    title: 'Draw a polygon',
-                    allowIntersection: false,
-                    drawError: {
-                      color: '#b00b00',
-                      timeout: 1000
-                    },
-                    shapeOptions: {
-                      color: '#bada55'
-                    }
-                  },
-                  // TODO: Make an option.
+                  polygon: options.draw.tools.polygon,
                   circle: options.draw.tools.circle,
                   marker: options.draw.tools.marker,
+                  rectangle: options.draw.tools.rectangle,
                   polyline: options.draw.tools.polyline
                 },
                 edit: {

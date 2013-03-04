@@ -25,10 +25,13 @@ function leaflet_widget_field_widget_info() {
       ),
       'toggle' => '',
       'draw' => array(
-        'polyline' => TRUE,
-        'polygon' => TRUE,
-        'circle' => TRUE,
-        'marker' => TRUE,
+        'tools' => array(
+          'polyline' => TRUE,
+          'polygon' => TRUE,
+          'rectangle' => TRUE,
+          'circle' => TRUE,
+          'marker' => TRUE,
+        ),
       ),
     ),
     'behaviors' => array(
@@ -97,6 +100,7 @@ function leaflet_widget_field_widget_settings_form($field, $instance) {
       $options = array(
         'polyline' => t('Polyline'),
         'polygon' => t('Polygon'),
+        'rectangle' => t('Rectangle'),
         'circle' => t('Circle'),
         'marker' => t('Marker'),
       );
@@ -104,7 +108,7 @@ function leaflet_widget_field_widget_settings_form($field, $instance) {
         '#type' => 'checkboxes',
         '#title' => 'Tools to include on the map.',
         '#description' => "Decide which tools you want to add. Defaults to all.",
-        '#value' => $settings['draw']['tools'],
+        '#default_value' => $settings['draw']['tools'],
         '#options' => $options,
       );
       break;
@@ -122,6 +126,8 @@ function leaflet_widget_field_widget_form(&$form, &$form_state, $field, $instanc
 
   $widget = geofield_get_base_element($element, $items, $delta);
   $widget['#type'] = 'fieldset';
+  // Geofield adds its own description even though #description is available.
+  unset($widget['description']);
 
   switch ($instance['widget']['type']) {
     case 'leaflet_widget_widget':
@@ -163,7 +169,6 @@ function leaflet_widget_field_widget_form(&$form, &$form_state, $field, $instanc
         'type' => 'setting',
         'data' => array('leaflet_widget_widget' => array($id => $settings)),
       );
-
       break;
   }
 

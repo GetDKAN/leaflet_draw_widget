@@ -189,9 +189,28 @@ function leaflet_widget_widget_validate($element, &$form_state) {
   $geophp = geophp_load();
   if (!$geophp) return FALSE;
 
+  // Validatejson type is valid.
   $geojson = json_decode($element['wkt']['#value']);
+  $types = array('FeatureCollection', 'GeometryCollection', 'Feature', 'Point', 'MultiPoint', 'LineString', 'MultiLineString', 'Polygon', 'MultiPolygon');
+
   $results = array();
   if ($geojson) {
+    // Validates type.
+    if (!in_array($geojson->type, $types)) {
+      form_set_error($element['wkt']['#name'], 'Please enter valid GeoJSON');
+      return FALSE;
+    }
+
+    // Validates structures.
+    try {
+      $geometry = geoPHP::load($element['wkt']['#value'], 'json');
+      $geometry->out('wkt');
+    }
+    catch (Exception $e) {
+      form_set_error($element['wkt']['#name'], 'Please enter valid GeoJSON');
+      return FALSE;
+    }
+
     if ($geojson->type === 'FeatureCollection') {
       foreach ($geojson->features as $feature) {
         $results[] = array_merge($results, leaflet_widget_process_geojson($feature));

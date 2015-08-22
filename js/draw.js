@@ -97,11 +97,10 @@
           write.push(layerToGeometry(layers[key]));
         }
       }
-      // If no value then provide empty collection.
-      if (!write.length) {
-        write = JSON.stringify({"type":"FeatureCollection","features":[]});
+      // Only save if there is a value.
+      if (write.length) {
+        $('#' + id + '-input').val(write);
       }
-      $('#' + id + '-input').val(write);
     }
 
     /**

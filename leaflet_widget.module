@@ -190,19 +190,15 @@ function leaflet_widget_widget_validate($element, &$form_state) {
   if (!$geophp) return FALSE;
 
   $geojson = json_decode($element['wkt']['#value']);
+
   $results = array();
-  if ($geojson) {
-    if ($geojson->type === 'FeatureCollection') {
-      foreach ($geojson->features as $feature) {
-        $results[] = array_merge($results, leaflet_widget_process_geojson($feature));
-      }
-    }
-    else {
-      $results = array(leaflet_widget_process_geojson($geojson));
+  if ($geojson->type === 'FeatureCollection') {
+    foreach ($geojson->features as $feature) {
+      $results[] = array_merge($results, leaflet_widget_process_geojson($feature));
     }
   }
   else {
-    $results = array();
+    $results = array(leaflet_widget_process_geojson($geojson));
   }
 
   form_set_value($element, $results, $form_state);
@@ -221,8 +217,8 @@ function leaflet_widget_process_geojson($geojson) {
  */
 function leaflet_widget_library() {
   $path = drupal_get_path('module', 'leaflet_widget');
-  $leaflet_draw = libraries_get_path('leaflet_draw');
-  $leaflet_core = libraries_get_path('leaflet_core');
+  $leaflet_draw = libraries_get_path('Leaflet.draw');
+  $leaflet_core = libraries_get_path('Leaflet');
 
   $libraries = array();
 
@@ -233,13 +229,13 @@ function leaflet_widget_library() {
       "$path/js/draw.js" => array(),
     ),
     'dependencies' => array(
-      array('leaflet_widget', 'leaflet_draw'),
+      array('leaflet_widget', 'Leaflet.draw'),
     ),
   );
 
-  $libraries['leaflet_draw'] = array(
+  $libraries['Leaflet.draw'] = array(
     'title' => 'Leaflet.draw',
-    'version' => '0.2.4',
+    'version' => '2.x',
     'css' => array(
       "$leaflet_draw/dist/leaflet.draw.css" => array(),
     ),
@@ -247,18 +243,21 @@ function leaflet_widget_library() {
       "$leaflet_draw/dist/leaflet.draw.js" => array(),
     ),
     'dependencies' => array(
-      array('leaflet_widget', 'leaflet_core'),
+      array('leaflet_widget', 'Leaflet'),
     ),
   );
 
-  $libraries['leaflet_core'] = array(
+  // If available, use the same Leaflet as Leaflet module. Otherwise use the
+  // one bundled with Leaflet.widget.
+  $libraries['Leaflet'] = array(
     'title' => 'Leaflet (Leaflet Widget)',
-    'version' => '0.7.3',
+    'version' => '6',
     'css' => array(
       "$leaflet_core/dist/leaflet.css" => array(),
+      "$leaflet_core/dist/leaflet.ie.css" => array('browsers' => array('IE' => 'lte IE 8')),
     ),
     'js' => array(
-      "$leaflet_core/dist/leaflet.js" => array(),
+      "$leaflet_core/dist/leaflet-src.js" => array(),
     ),
   );
 

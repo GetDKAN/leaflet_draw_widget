@@ -59,9 +59,8 @@
                   $.each(json_data.features, function (index, item) {
                     if (item.id == area) {
                       var geostring = JSON.stringify(item);
-                      $('#' + id + '-input').val('{"type":"FeatureCollection","features":[' + geostring + ']}');
                       L.geoJson(item).addTo(map);
-                      map._onResize();
+                      leafletWidgetFormWrite(map._layers, id);
                     }
                   });
                 }
@@ -141,7 +140,8 @@
       if (!write.length) {
         write = JSON.stringify({"type":"FeatureCollection","features":[]});
       }
-      $('#' + id + '-input').val(write);
+      $('#' + id + '-input').val('{"type":"FeatureCollection", "features":[' + write + ']}');
+        console.log(write);
     }
 
     /**

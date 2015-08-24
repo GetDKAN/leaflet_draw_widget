@@ -189,7 +189,7 @@ function leaflet_widget_field_widget_form(&$form, &$form_state, $field, $instanc
       // Add JSON utility js.
       $widget['#attached']['js'][] = array(
         'type' => 'file',
-        'data' => drupal_get_path('module', 'leaflet_widget') . '/js/json2.js',
+        'data' => drupal_get_path('module', 'leaflet_widget') . '/js/json2.min.js',
       );
       break;
   }

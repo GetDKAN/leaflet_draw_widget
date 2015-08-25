@@ -213,7 +213,7 @@ function leaflet_widget_widget_validate($element, &$form_state) {
 
   //Validate json type is valid.
   $geojson = json_decode($element['wkt']['#value']);
-  $types = array('FeatureCollection', 'GeometryCollection', 'Feature', 'Point', 'MultiPoint', 'LineString', 'MultiLineString', 'Polygon', 'MultiPolygon'); dpm($geojson);
+  $types = array('FeatureCollection', 'GeometryCollection', 'Feature', 'Point', 'MultiPoint', 'LineString', 'MultiLineString', 'Polygon', 'MultiPolygon');
 
   $results = array();
   if ($geojson) {

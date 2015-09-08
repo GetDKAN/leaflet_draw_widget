@@ -172,6 +172,7 @@ function leaflet_widget_field_widget_form(&$form, &$form_state, $field, $instanc
 
       // Include javascript.
       $widget['#attached']['library'][] = array('leaflet_widget', 'draw');
+      $widget['#attached']['library'][] = array('system', 'ui.tabs');
 
       //Check if we need to add geographic areas
       if (isset($settings['geographic_areas']) && $settings['geographic_areas']) {

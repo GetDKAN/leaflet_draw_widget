@@ -61,12 +61,9 @@
         leafletWidgetLayerRemove(map._layers, Items);
         // Add new layer.
         Items.addLayer(layer);
-      });
 
-      $(item).parents('form').submit(function(event){
-        if ($('#' + id + '-toggle').hasClass('map')) {
-          leafletWidgetFormWrite(map._layers, id)
-        }
+        // Update the field input.
+        leafletWidgetFormWrite(Items._layers, id)
       });
 
       Drupal.leaflet_widget[id] = map;
@@ -207,7 +204,8 @@
     var write  = Array();
     for (var key in layers) {
       if (layers[key]._latlngs || layers[key]._latlng) {
-        write.push(layerToGeometry(layers[key]));
+        var feature = '{ "type": "Feature","geometry":' + layerToGeometry(layers[key]) + '}';
+        write.push(feature);
       }
     }
     // If no value then provide empty collection.

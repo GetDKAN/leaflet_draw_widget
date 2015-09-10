@@ -167,7 +167,7 @@
 
       if (options.geographic_areas) {
         var json_data = {};
-        var selectList = "<div class='geographic_areas_desc'><p></br>Select a state to add into the map:</p><select id='geographic_areas' name='area'>";
+        var selectList = "<div class='geographic_areas_desc'><p></br>Select a region to add into the map:</p><select id='geographic_areas' name='area'>";
         selectList += "<option value='0'>" + Drupal.t('-none-') + "</option>";
 
         for (i = 0; i < options.areas.length; i++) {

@@ -47,7 +47,7 @@
           polyline: options.draw.tools.polyline
         },
         edit: {
-          featureGroup: Items
+          featureGroup: Items,
         }
       });
 
@@ -60,7 +60,7 @@
         // per field.
         leafletWidgetLayerRemove(map._layers, Items);
         // Add new layer.
-        Items.addLayer(layer);
+          Items.addLayer(layer);
 
         // Update the field input.
         leafletWidgetFormWrite(Items._layers, id)
@@ -187,7 +187,12 @@
             json_data = jQuery.parseJSON(options.areas[i]);
             $.each(json_data.features, function (index, item) {
               if (item.id == area) {
-                L.geoJson(item).addTo(map);
+                  var geojson = L.geoJson(item, {
+                      onEachFeature: function (feature, layer) {
+                          Items.addLayer(layer);
+
+                      }
+                  });
                 leafletWidgetFormWrite(map._layers, id);
               }
             });

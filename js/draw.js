@@ -66,6 +66,10 @@
         leafletWidgetFormWrite(Items._layers, id)
       });
 
+      map.on('draw:deleted', function (e) {
+        $('#' + id + '-input').val('');
+      });
+
       Drupal.leaflet_widget[id] = map;
 
       if (options.toggle) {
@@ -189,6 +193,9 @@
               if (item.id == area) {
                   var geojson = L.geoJson(item, {
                       onEachFeature: function (feature, layer) {
+                          // Remove already created layers. We only want to save one
+                          // per field.
+                          leafletWidgetLayerRemove(map._layers, Items);
                           Items.addLayer(layer);
 
                       }

@@ -1,0 +1,49 @@
+# behat.yml
+
+default:
+  suites:
+    default:
+      contexts:
+          - FeatureContext
+          # Load the Drupal Context from DrupalExtension
+          - Drupal\DrupalExtension\Context\DrupalContext
+          # Load the generic DKAN context
+          - Drupal\DKANExtension\Context\DKANContext
+          # Load DKAN Groups functionality
+          - Drupal\DKANExtension\Context\GroupContext
+          # Load DKAN Page functionality
+          - Drupal\DKANExtension\Context\PageContext
+          # Load DKAN Page functionality
+          - Drupal\DKANExtension\Context\DatasetContext
+      gherkin:
+        filters:
+          tags: ~@wip
+      formatters:
+        pretty: true
+      extensions:
+        Behat\MinkExtension:
+          base_url: http://127.0.0.1
+      selenium2: ~
+      goutte: ~
+      show_cmd: firefox %s
+      Drupal\DrupalExtension:
+        blackbox: ~
+      drupal:
+        drupal_root: %paths.base%/drupal
+      drush:
+        alias: @self
+      api_driver: 'drupal'
+        # @todo fixup these regions for use on hhs
+      region_map:
+        navigation: '.region-navigation'
+        breadcrumb: '.breadcrumb'
+        left_sidebar: '.panel-col-first'
+        search_area: '.panel-col-last'
+        dropdown_links: '.comment-main .links.inline.dropdown-menu'
+        comment: '.comment-main'
+      selectors:
+        message_selector: '.alert'
+        error_message_selector: '.alert.alert-error'
+        success_message_selector: '.alert.alert-success'
+
+

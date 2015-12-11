@@ -335,7 +335,7 @@ function leaflet_widget_geojson_feature($wkt, $properties = array()) {
  */
 function leaflet_widget_leaflet_widget_base_layers() {
   return array(
-    'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png' => 'OSM Mapnik',
+    '//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png' => 'OSM Mapnik',
   );
 }
 

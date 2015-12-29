@@ -11,6 +11,7 @@
             var id = $(item).attr('id'),
             options = settings.leaflet_widget_widget[id];
             if (options.toggle) {
+              $('#' + id + '-input').before('<div class="map btn btn-default" style="cursor: pointer;" id="' + id + '-reset-toggle">RESET</div>');
               $('#' + id + '-input').before('<div class="map btn btn-default" style="cursor: pointer;" id="' + id + '-geojson-toggle">GEOJSON</div>');
               $('#' + id + '-input').before('<div class="map btn btn-default" style="cursor: pointer;" id="' + id + '-point-toggle">POINT</div></br><input type="text" id="manual-' + id + '-point-input" name="manual-point">');
                 $('#manual-' + id + '-point-input').hide();
@@ -77,6 +78,10 @@
                     $('.geographic_areas_desc').show();
                   }
                 }
+              });
+
+              $('#' + id + '-reset-toggle').click(function () {
+                map.invalidateSize().setView(options.map['center'], options.map['zoom']);
               });
 
             }

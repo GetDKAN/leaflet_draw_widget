@@ -82,6 +82,9 @@
 
               $('#' + id + '-reset-toggle').click(function () {
                 map.invalidateSize().setView(options.map['center'], options.map['zoom']);
+                leafletWidgetLayerRemove(map._layers, Items);
+                map._layers = Drupal.settings.leaflet_widget_widget[id]['orig_layers'];
+                leafletWidgetLayerAdd(map._layers, Items);
               });
 
             }
@@ -126,6 +129,8 @@
                 layers.push(geojson._layers[key]);
                }
             }
+            // Save ORIG layers to use with RESET button.
+            Drupal.settings.leaflet_widget_widget[id]['orig_layers'] = layers;
 
             var Items = new L.FeatureGroup(layers).addTo(map);
             // Autocenter if that's cool.
@@ -197,6 +202,17 @@
       for (var key in layers) {
         if (layers[key]._latlngs || layers[key]._latlng) {
           Items.removeLayer(layers[key]);
+        }
+      }
+    }
+
+    /**
+     * Add layers that are already on the map.
+     */
+    function leafletWidgetLayerAdd(layers, Items) {
+      for (var key in layers) {
+        if (layers[key]._latlngs || layers[key]._latlng) {
+          Items.addLayer(layers[key]);
         }
       }
     }

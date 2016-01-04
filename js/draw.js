@@ -26,6 +26,9 @@
         }
       }
 
+      // Save ORIG layers to use with RESET button.
+      Drupal.settings.leaflet_widget_widget[id]['orig_layers'] = layers;
+
       var Items = new L.FeatureGroup(layers).addTo(map);
 
       // Autocenter if that's cool.
@@ -69,10 +72,11 @@
       Drupal.leaflet_widget[id] = map;
 
       if (options.toggle) {
+        var reset_button = '<span class="map btn btn-default" style="cursor: pointer;" id="' + id + '-reset">Reset</span>';
         $('#' + id).before('<ul class="ui-tabs-nav leaflet-widget">' +
-                           '<li><a href="#' + id + '">Map</a></li>' +
-                           '<li><a href="#' + id + '-geojson' + '">GeoJSON</a></li>' +
-                           '<li><a href="#' + id + '-points' + '">Points</a></li>' +
+                           '<li><a href="#' + id + '">Map</a>'  + reset_button + '</li>' +
+                           '<li><a href="#' + id + '-geojson">GeoJSON</a></li>' +
+                           '<li><a href="#' + id + '-points">Points</a></li>' +
                            '</ul>');
 
         $('#' + id).after('<div id="' + id + '-geojson">' +
@@ -163,7 +167,16 @@
             }
           }
         });
+        $('#' + id + '-reset').click(function () {
+          if ($('div#' + id).is(':visible')) {
+            map.invalidateSize().setView(options.map['center'], options.map['zoom']);
+            leafletWidgetLayerRemove(map._layers, Items);
+            map._layers = Drupal.settings.leaflet_widget_widget[id]['orig_layers'];
+            leafletWidgetLayerAdd(map._layers, Items);
+          }
+        });
       }
+
 
       if (options.geographic_areas) {
         var json_data = {};
@@ -213,6 +226,17 @@
       write = JSON.stringify({"type":"FeatureCollection","features":[]});
     }
     $('#' + id + '-input').val('{"type":"FeatureCollection", "features":[' + write + ']}');
+  }
+
+  /**
+  * Add layers that are already on the map.
+  */
+  function leafletWidgetLayerAdd(layers, Items) {
+    for (var key in layers) {
+      if (layers[key]._latlngs || layers[key]._latlng) {
+        Items.addLayer(layers[key]);
+      }
+    }
   }
 
   /**

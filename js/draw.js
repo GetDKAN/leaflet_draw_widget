@@ -9,7 +9,7 @@
   function attach(context, settings) {
     $('.leaflet-widget').once('leaflet-widget').each(function(i, item) {
       var id = $(item).attr('id'),
-        options = settings.leaflet_widget_widget[id];
+      options = settings.leaflet_widget_widget[id];
 
       var map = L.map(id, options.map);
 
@@ -81,95 +81,95 @@
       if (options.toggle) {
         var reset_button = '<span class="map btn btn-default" style="cursor: pointer;" id="' + id + '-reset">Reset</span>';
         $('#' + id).before('<ul class="ui-tabs-nav leaflet-widget">' +
-                           '<li><a href="#' + id + '">Map</a>'  + reset_button + '</li>' +
-                           '<li><a href="#' + id + '-geojson">GeoJSON</a></li>' +
-                           '<li><a href="#' + id + '-points">Points</a></li>' +
-                           '</ul>');
+          '<li><a href="#' + id + '">Map</a>'  + reset_button + '</li>' +
+          '<li><a href="#' + id + '-geojson">GeoJSON</a></li>' +
+          '<li><a href="#' + id + '-points">Points</a></li>' +
+        '</ul>');
 
-        $('#' + id).after('<div id="' + id + '-geojson">' +
-                          '<label for="' + id + '-geojson-textarea">' + Drupal.t('Enter GeoJSON:') + '</label>' +
-                          '<textarea class="text-full form-control form-textarea" id="' + id + '-geojson-textarea" cols="60" rows="10"></textarea>' +
-                          '</div>');
+      $('#' + id).after('<div id="' + id + '-geojson">' +
+        '<label for="' + id + '-geojson-textarea">' + Drupal.t('Enter GeoJSON:') + '</label>' +
+        '<textarea class="text-full form-control form-textarea" id="' + id + '-geojson-textarea" cols="60" rows="10"></textarea>' +
+      '</div>');
 
-        // Set placeholder
-        $('#' + id + '-geojson-textarea').attr('placeholder', JSON.stringify({"type":"FeatureCollection","features":[]}));
+    // Set placeholder
+    $('#' + id + '-geojson-textarea').attr('placeholder', JSON.stringify({"type":"FeatureCollection","features":[]}));
 
-        // Update field's input when geojson input is updated.
-        // @TODO validate before sync
-        $('#' + id + '-geojson-textarea').on('input', function(e) {
-          if(!$('#' + id + '-geojson-textarea').val()) {
-            $('#' + id + '-input').val(JSON.stringify({"type":"FeatureCollection","features":[]}));
-          } else {
-            $('#' + id + '-input').val($('#' + id + '-geojson-textarea').val());
-          }
-        });
+    // Update field's input when geojson input is updated.
+    // @TODO validate before sync
+    $('#' + id + '-geojson-textarea').on('input', function(e) {
+      if(!$('#' + id + '-geojson-textarea').val()) {
+        $('#' + id + '-input').val(JSON.stringify({"type":"FeatureCollection","features":[]}));
+      } else {
+        $('#' + id + '-input').val($('#' + id + '-geojson-textarea').val());
+      }
+    });
 
-        $('#' + id).after('<div id="' + id + '-points" class="">' +
-                          '<label for="' + id + '-points">' + Drupal.t('Point') + '</label>' +
-                          '<input class="text-full form-control form-text" type="text" id="' + id + '-points-input" " placeholder="longitude,latitude" "size="60" maxlength="255">' +
-                          '</div>');
+    $('#' + id).after('<div id="' + id + '-points" class="">' +
+      '<label for="' + id + '-points">' + Drupal.t('Point') + '</label>' +
+      '<input class="text-full form-control form-text" type="text" id="' + id + '-points-input" " placeholder="longitude,latitude" "size="60" maxlength="255">' +
+    '</div>');
 
-        // Update field's input when geojson input is updated.
-        $('#' + id + '-points-input').on('input', function(e) {
-          try{
-            var latlng = L.latLng($('#' + id + '-points-input').val().split(','));
-            var coordinates = LatLngToCoords(latlng);
-            var geojsonFeature = {"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Point","coordinates":coordinates},"properties":[]}]}
-            var write = JSON.stringify(geojsonFeature);
+  // Update field's input when geojson input is updated.
+  $('#' + id + '-points-input').on('input', function(e) {
+    try{
+      var latlng = L.latLng($('#' + id + '-points-input').val().split(','));
+      var coordinates = LatLngToCoords(latlng);
+      var geojsonFeature = {"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Point","coordinates":coordinates},"properties":[]}]}
+      var write = JSON.stringify(geojsonFeature);
 
-            var l  = L.geoJson(geojsonFeature).addTo(map);
-            leafletWidgetLayerAdd(l.layers, Items);
-            leafletWidgetFormWrite(map._layers, id);
-          }
-          catch(e) {
-            console.log(e);
-          }
-        });
+      var l  = L.geoJson(geojsonFeature).addTo(map);
+      leafletWidgetLayerAdd(l.layers, Items);
+      leafletWidgetFormWrite(map._layers, id);
+    }
+    catch(e) {
+      console.log(e);
+    }
+  });
 
-        // Add tabs.
-        $('#' + id).parent().tabs();
+  // Add tabs.
+  $('#' + id).parent().tabs();
 
-        // Map tab is selected
-        // Clear previous layers
-        $('a[href="#' + id + '"]').click(function() {
-          leafletWidgetLayerRemove(map._layers, Items);
-          var current = $('#' + id + '-input').val();
-          current = JSON.parse(current);
-          if (current.features.length) {
-            var geojson = L.geoJson(current)
-            for (var key in geojson._layers) {
-              // Add new layer.
-              Items.addLayer(geojson._layers[key]);
-            }
-            map.fitBounds(Items.getBounds());
-          }
-        });
+  // Map tab is selected
+  // Clear previous layers
+  $('a[href="#' + id + '"]').click(function() {
+    leafletWidgetLayerRemove(map._layers, Items);
+    var current = $('#' + id + '-input').val();
+    current = JSON.parse(current);
+    if (current.features.length) {
+      var geojson = L.geoJson(current)
+      for (var key in geojson._layers) {
+        // Add new layer.
+        Items.addLayer(geojson._layers[key]);
+      }
+      map.fitBounds(Items.getBounds());
+    }
+  });
 
-        // Reset button is selected.
-        // Update field's input when geojson input is updated.
-        $('#' + id + '-reset').click(function () {
-          if ($('div#' + id).is(':visible')) {
-            map.invalidateSize().setView(options.map['center'], options.map['zoom']);
-            leafletWidgetLayerRemove(map._layers, Items);
-            map._layers = Drupal.settings.leaflet_widget_widget[id]['orig_layers'];
-            leafletWidgetFormWrite(layers, id);
-            leafletWidgetLayerAdd(map._layers, Items);
-            if (current.features.length && options.map.auto_center) {
-              map.fitBounds(Items.getBounds());
-            }
-          }
-        });
+  // Reset button is selected.
+  // Update field's input when geojson input is updated.
+  $('#' + id + '-reset').click(function () {
+    if ($('div#' + id).is(':visible')) {
+      map.invalidateSize().setView(options.map['center'], options.map['zoom']);
+      leafletWidgetLayerRemove(map._layers, Items);
+      map._layers = Drupal.settings.leaflet_widget_widget[id]['orig_layers'];
+      leafletWidgetFormWrite(layers, id);
+      leafletWidgetLayerAdd(map._layers, Items);
+      if (current.features.length && options.map.auto_center) {
+        map.fitBounds(Items.getBounds());
+      }
+    }
+  });
 
-        // GeoJSON tab is selected
-        // Sync from field's input
-        $('a[href="#' + id + '-geojson"]').click(function() {
-          $('#' + id + '-geojson-textarea').val($('#' + id + '-input').val());
-        });
+  // GeoJSON tab is selected
+  // Sync from field's input
+  $('a[href="#' + id + '-geojson"]').click(function() {
+    $('#' + id + '-geojson-textarea').val($('#' + id + '-input').val());
+  });
 
-        // Points tab is selected
-        $('a[href="#' + id + '-points"]').click(function() {
-          // Nothing to do.
-        });
+  // Points tab is selected
+  $('a[href="#' + id + '-points"]').click(function() {
+    // Nothing to do.
+  });
 
       }
 
@@ -207,8 +207,8 @@
   }
 
   /**
-   * Writes layer to input field if there is a layer to write.
-   */
+  * Writes layer to input field if there is a layer to write.
+  */
   function leafletWidgetFormWrite(layers, id) {
     var write  = Array();
     for (var key in layers) {
@@ -225,8 +225,8 @@
   }
 
   /**
-   * Filters out layer from input if layer exists.
-   */
+  * Filters out layer from input if layer exists.
+  */
   function leafletWidgetFormDelete(layers, id, layer) {
     var write  = Array();
     for (var key in layers) {
@@ -257,8 +257,8 @@
   }
 
   /**
-   * Removes layers that are already on the map.
-   */
+  * Removes layers that are already on the map.
+  */
   function leafletWidgetLayerRemove(layers, Items) {
     for (var key in layers) {
       if (layers[key]._latlngs || layers[key]._latlng) {
@@ -292,7 +292,7 @@
 
   var LatLngToCoords = function (LatLng, reverse) { // (LatLng, Boolean) -> Array
     var lat = parseFloat(reverse ? LatLng.lng : LatLng.lat),
-      lng = parseFloat(reverse ? LatLng.lat : LatLng.lng);
+    lng = parseFloat(reverse ? LatLng.lat : LatLng.lng);
 
     return [lng,lat];
   }
@@ -300,12 +300,12 @@
   var LatLngsToCoords = function (LatLngs, levelsDeep, reverse) { // (LatLngs, Number, Boolean) -> Array
     var coord,
     coords = [],
-      i, len;
+    i, len;
 
     for (i = 0, len = LatLngs.length; i < len; i++) {
       coord = levelsDeep ?
-        LatLngToCoords(LatLngs[i], levelsDeep - 1, reverse) :
-        LatLngToCoords(LatLngs[i], reverse);
+      LatLngToCoords(LatLngs[i], levelsDeep - 1, reverse) :
+      LatLngToCoords(LatLngs[i], reverse);
       coords.push(coord);
     }
 

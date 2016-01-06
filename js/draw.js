@@ -38,7 +38,7 @@
         }
       }
 
-      // Add controles to the map
+      // Add controls to the map
       var drawControl = new L.Control.Draw({
         autocenter: true,
         draw: {
@@ -54,19 +54,26 @@
         }
       });
 
+
       map.addControl(drawControl);
 
       map.on('draw:created', function (e) {
-        var type = e.layerTypee,
-          layer = e.layer;
-        // Remove already created layers. We only want to save one
-        // per field.
-        leafletWidgetLayerRemove(map._layers, Items);
-        // Add new layer.
-        Items.addLayer(layer);
+        Items.addLayer(e.layer);
 
         // Update the field input.
         leafletWidgetFormWrite(Items._layers, id)
+      });
+
+      // Remove layer from the input field that will be saved.
+      map.on('draw:deleted', function(e) {
+        var layers = e.layers;
+        layers.eachLayer(function(layer) {
+          leafletWidgetFormDelete(Items._layers, id, layers);
+        });
+      });
+
+      map.on('draw:edited', function(e) {
+        leafletWidgetFormWrite(Items._layers, id);
       });
 
       Drupal.leaflet_widget[id] = map;
@@ -104,77 +111,66 @@
 
         // Update field's input when geojson input is updated.
         $('#' + id + '-points-input').on('input', function(e) {
-          var latlng = L.latLng($('#' + id + '-points-input').val().split(','));
-          var coordinates = LatLngToCoords(latlng);
-          var write = JSON.stringify(
-            {"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Point","coordinates":coordinates},"properties":[]}]}
-          );
-          $('#' + id + '-input').val(write);
-        });
+          try{
+            var latlng = L.latLng($('#' + id + '-points-input').val().split(','));
+            var coordinates = LatLngToCoords(latlng);
+            var geojsonFeature = {"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Point","coordinates":coordinates},"properties":[]}]}
+            var write = JSON.stringify(geojsonFeature);
 
-        // Set parent as JQuery UI element and update on selection
-        $('#' + id).parent().tabs({
-          // Default tab is the map tab.
-          selected: 0,
-          select: function(event, ui){
-            switch(ui.index) {
-              case 0:
-                // Map tab is selected
-                // Clear previous layers
-                leafletWidgetLayerRemove(map._layers, Items);
-              var current = $('#' + id + '-input').val();
-              current = JSON.parse(current);
-              if (current.features.length) {
-                var geojson = L.geoJson(current)
-                for (var key in geojson._layers) {
-                  // Add new layer.
-                  Items.addLayer(geojson._layers[key]);
-                }
-                map.fitBounds(Items.getBounds());
-              }
-              break;
-
-              case 1:
-                // GeoJSON tab is selected
-                // Sync from field's input
-                $('#' + id + '-geojson-textarea').val($('#' + id + '-input').val());
-              break;
-
-              case 2:
-                // Points tab is selected
-                // Reset value and error message and classes (if any).
-                $('#' + id + '-points-input').val('');
-                $('#' + id + '-points-input').parent().removeClass('has-error');
-              $('#' + id + '-points-input').prop('disabled', false)
-              .removeClass('error');
-              $('#' + id + '-points .help-block').remove();
-
-              var current = $('#' + id + '-input').val();
-              current = JSON.parse(current);
-              // Make this unavailable if more then single point.
-              if (current.features.length == 0) {
-                // Empty. Nothing to do
-              } else if (current.features.length == 1
-                  && current.features[0].geometry.type == 'Point') {
-                    $('#' + id + '-points-input').val(current.features[0].geometry.coordinates.toString());
-                  } else {
-                    $('#' + id + '-points-input').parent().addClass('has-error');
-                    $('#' + id + '-points-input').prop('disabled', true)
-                    .addClass('error')
-                    .after('<span class="help-block">Current data cannot be converted to a single point!</span>');
-                  }
-                  break;
-            }
+            var l  = L.geoJson(geojsonFeature).addTo(map);
+            leafletWidgetLayerAdd(l.layers, Items);
+            leafletWidgetFormWrite(map._layers, id);
+          }
+          catch(e) {
+            console.log(e);
           }
         });
+
+        // Add tabs.
+        $('#' + id).parent().tabs();
+
+        // Map tab is selected
+        // Clear previous layers
+        $('a[href="#' + id + '"]').click(function() {
+          leafletWidgetLayerRemove(map._layers, Items);
+          var current = $('#' + id + '-input').val();
+          current = JSON.parse(current);
+          if (current.features.length) {
+            var geojson = L.geoJson(current)
+            for (var key in geojson._layers) {
+              // Add new layer.
+              Items.addLayer(geojson._layers[key]);
+            }
+            map.fitBounds(Items.getBounds());
+          }
+        });
+
+        // Reset button is selected.
+        // Update field's input when geojson input is updated.
         $('#' + id + '-reset').click(function () {
           if ($('div#' + id).is(':visible')) {
             map.invalidateSize().setView(options.map['center'], options.map['zoom']);
             leafletWidgetLayerRemove(map._layers, Items);
             map._layers = Drupal.settings.leaflet_widget_widget[id]['orig_layers'];
+            leafletWidgetFormWrite(layers, id);
             leafletWidgetLayerAdd(map._layers, Items);
+            if (current.features.length && options.map.auto_center) {
+              map.fitBounds(Items.getBounds());
+            }
           }
         });
+
+        // GeoJSON tab is selected
+        // Sync from field's input
+        $('a[href="#' + id + '-geojson"]').click(function() {
+          $('#' + id + '-geojson-textarea').val($('#' + id + '-input').val());
+        });
+
+        // Points tab is selected
+        $('a[href="#' + id + '-points"]').click(function() {
+          // Nothing to do.
+        });
+
       }
 
 
@@ -221,6 +217,27 @@
         write.push(feature);
       }
     }
+    // If no value then provide empty collection.
+    if (!write.length) {
+      write = JSON.stringify({"type":"FeatureCollection","features":[]});
+    }
+    $('#' + id + '-input').val('{"type":"FeatureCollection", "features":[' + write + ']}');
+  }
+
+  /**
+   * Filters out layer from input if layer exists.
+   */
+  function leafletWidgetFormDelete(layers, id, layer) {
+    var write  = Array();
+    for (var key in layers) {
+      if (layers[key]._latlngs || layers[key]._latlng) {
+        var feature = '{ "type": "Feature","geometry":' + layerToGeometry(layers[key]) + '}';
+        if (layer.feature != layers[key].feature) {
+          write.push(feature);
+        }
+      }
+    }
+
     // If no value then provide empty collection.
     if (!write.length) {
       write = JSON.stringify({"type":"FeatureCollection","features":[]});

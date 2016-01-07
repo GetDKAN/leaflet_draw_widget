@@ -105,20 +105,22 @@
 
     $('#' + id).after('<div id="' + id + '-points" class="">' +
       '<label for="' + id + '-points">' + Drupal.t('Point') + '</label>' +
-      '<input class="text-full form-control form-text" type="text" id="' + id + '-points-input" " placeholder="longitude,latitude" "size="60" maxlength="255">' +
+      '<input class="text-full form-control form-text" type="text" id="' + id + '-points-input"  placeholder="longitude,latitude" "size="60" maxlength="255"> <a href="#add-point" class="map btn btn-default btn-add-point btn-primary" id="' + id +'-points-add">Add</a>' +
     '</div>');
 
   // Update field's input when geojson input is updated.
-  $('#' + id + '-points-input').on('input', function(e) {
+  $('#' + id + '-points-add').on('click', function(e) {
     try{
       var latlng = L.latLng($('#' + id + '-points-input').val().split(','));
       var coordinates = LatLngToCoords(latlng);
       var geojsonFeature = {"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Point","coordinates":coordinates},"properties":[]}]}
       var write = JSON.stringify(geojsonFeature);
-
       var l  = L.geoJson(geojsonFeature).addTo(map);
-      leafletWidgetLayerAdd(l.layers, Items);
+      leafletWidgetLayerAdd(l._layers, Items);
       leafletWidgetFormWrite(map._layers, id);
+      map.fitBounds(Items.getBounds());
+      $('#' + id + '-points-input').val("");
+      map.fitBounds(Items.getBounds());
     }
     catch(e) {
       console.log(e);
@@ -131,6 +133,9 @@
   // Map tab is selected
   // Clear previous layers
   $('a[href="#' + id + '"]').click(function() {
+    if (!$('div#' + id).is(':visible')) {
+      $('div#' + id).show();
+    }
     leafletWidgetLayerRemove(map._layers, Items);
     var current = $('#' + id + '-input').val();
     current = JSON.parse(current);
@@ -162,14 +167,18 @@
   // GeoJSON tab is selected
   // Sync from field's input
   $('a[href="#' + id + '-geojson"]').click(function() {
+    if ($('div#' + id).is(':visible')) {
+      $('div#' + id).hide();
+    }
     $('#' + id + '-geojson-textarea').val($('#' + id + '-input').val());
   });
 
   // Points tab is selected
   $('a[href="#' + id + '-points"]').click(function() {
-    // Nothing to do.
+    if (!$('div#' + id).is(':visible')) {
+      $('div#' + id).show();
+    }
   });
-
       }
 
 

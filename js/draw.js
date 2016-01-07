@@ -79,9 +79,8 @@
       Drupal.leaflet_widget[id] = map;
 
       if (options.toggle) {
-        var reset_button = '<span class="map btn btn-default" style="cursor: pointer;" id="' + id + '-reset">Reset</span>';
         $('#' + id).before('<ul class="ui-tabs-nav leaflet-widget">' +
-          '<li><a href="#' + id + '">Map</a>'  + reset_button + '</li>' +
+          '<li><a href="#' + id + '">Map</a></li>' +
           '<li><a href="#' + id + '-geojson">GeoJSON</a></li>' +
           '<li><a href="#' + id + '-points">Points</a></li>' +
         '</ul>');

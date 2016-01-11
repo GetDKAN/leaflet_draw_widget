@@ -104,27 +104,34 @@
     });
 
     $('#' + id).after('<div id="' + id + '-points" class="">' +
-      '<label for="' + id + '-points">' + Drupal.t('Point') + '</label>' +
-      '<input class="text-full form-control form-text" type="text" id="' + id + '-points-input"  placeholder="longitude,latitude" "size="60" maxlength="255"> <a href="#add-point" class="map btn btn-default btn-add-point btn-primary" id="' + id +'-points-add">Add</a>' +
+      '<label for="' + id + '-points">' + Drupal.t('Points') + '</label>' +
+      '<input class="text-full form-control form-text" type="text" id="' + id + '-points-input"  placeholder="longitude,latitude; longitude, latitude; ..." "size="60" maxlength="255"> <a href="#add-point" class="map btn btn-default btn-add-point btn-primary" id="' + id +'-points-add">Add Points</a>' +
     '</div>');
 
   // Update field's input when geojson input is updated.
   $('#' + id + '-points-add').on('click', function(e) {
-    try{
-      var latlng = L.latLng($('#' + id + '-points-input').val().split(','));
-      var coordinates = LatLngToCoords(latlng);
-      var geojsonFeature = {"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Point","coordinates":coordinates},"properties":[]}]}
-      var write = JSON.stringify(geojsonFeature);
-      var l  = L.geoJson(geojsonFeature).addTo(map);
-      leafletWidgetLayerAdd(l._layers, Items);
-      leafletWidgetFormWrite(map._layers, id);
-      map.fitBounds(Items.getBounds());
-      $('#' + id + '-points-input').val("");
-      map.fitBounds(Items.getBounds());
-    }
-    catch(e) {
-      console.log(e);
-    }
+    var points = $('#' + id + '-points-input').val().split(';');
+    points.forEach(function(point) {
+      if (!point) {
+        return;
+      }
+      try {
+        var latlng = L.latLng(point.split(','));
+        console.log(latlng);
+        var coordinates = LatLngToCoords(latlng);
+        var geojsonFeature = {"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Point","coordinates":coordinates},"properties":[]}]}
+        var write = JSON.stringify(geojsonFeature);
+        var l  = L.geoJson(geojsonFeature).addTo(map);
+        leafletWidgetLayerAdd(l._layers, Items);
+        leafletWidgetFormWrite(map._layers, id);
+        map.fitBounds(Items.getBounds());
+        $('#' + id + '-points-input').val("");
+        map.fitBounds(Items.getBounds());
+      }
+      catch(e) {
+        console.log(e);
+      }
+    });
   });
 
   // Add tabs.

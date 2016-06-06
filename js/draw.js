@@ -11,6 +11,10 @@
       var id = $(item).attr('id'),
         options = settings.leaflet_widget_widget[id];
 
+      // Keeps map from updating when fired from other event.
+      if (typeof id == 'undefined')
+        return false;
+
       var map = L.map(id, options.map);
 
       L.tileLayer(options.map.base_url).addTo(map);

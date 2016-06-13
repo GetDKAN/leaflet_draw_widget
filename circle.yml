@@ -38,7 +38,9 @@ dependencies:
     - echo "memory_limit = 256M" > ~/.phpenv/versions/5.5.11/etc/conf.d/memory.ini
   override:
     - mkdir $CIRCLE_ARTIFACTS/junit
+    - 'cd ..; mv leaflet_draw_widget leaflet_widget; ln -s ~/leaflet_widget ~/leaflet_draw_widget; cd ~/leaflet_draw_widget'
     - 'bash dkan-module-init.sh --deps --build=$DATABASE_URL'
+    - 'cd dkan/modules/contrib/leaflet_draw_widget; rm -rf leaflet_draw_widget; ln -s leaflet_widget leaflet_draw_widget'
     - 'ahoy drush --yes runserver :8888':
         background: true
 

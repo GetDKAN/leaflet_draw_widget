@@ -1,5 +1,6 @@
 
 # Name of the current module.
+
 DKAN_MODULE=`ls *.info | cut -d'.' -f1`
 
 # DKAN branch or tag to use.

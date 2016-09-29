@@ -7,7 +7,7 @@
   };
 
   function attach(context, settings) {
-    $('.leaflet-widget').once('leaflet-widget').each(function(i, item) {
+    $('div.leaflet-widget').once('leaflet-widget').each(function(i, item) {
       var id = $(item).attr('id'),
       options = settings.leaflet_widget_widget[id];
 

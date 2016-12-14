@@ -15,4 +15,4 @@ libraries[leaflet_draw][download][tag] = "v0.2.4"
 libraries[leaflet_core][type] = libraries
 libraries[leaflet_core][download][type] = git
 libraries[leaflet_core][download][url] = "https://github.com/Leaflet/Leaflet.git"
-libraries[leaflet_core][download][tag] = "v0.7.3"
+libraries[leaflet_core][download][tag] = "v1.0.2"

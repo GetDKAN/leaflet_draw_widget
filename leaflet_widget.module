@@ -280,7 +280,7 @@ function leaflet_widget_library() {
 
   $libraries['leaflet_draw'] = array(
     'title' => 'Leaflet.draw',
-    'version' => '0.2.4',
+    'version' => '0.4.7',
     'css' => array(
       "$leaflet_draw/dist/leaflet.draw.css" => array(),
     ),
@@ -294,7 +294,7 @@ function leaflet_widget_library() {
 
   $libraries['leaflet_core'] = array(
     'title' => 'Leaflet (Leaflet Widget)',
-    'version' => '0.7.3',
+    'version' => '1.0.2',
     'css' => array(
       "$leaflet_core/dist/leaflet.css" => array(),
     ),

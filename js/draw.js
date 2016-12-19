@@ -12,7 +12,7 @@
             options = settings.leaflet_widget_widget[id];
             if (options.toggle) {
               $('#' + id + '-input').before('<div class="map btn btn-default" style="cursor: pointer;" id="' + id + '-geojson-toggle">GEOJSON</div>');
-              $('#' + id + '-input').before('<div class="map btn btn-default" style="cursor: pointer;" id="' + id + '-point-toggle">POINT</div></br><input type="text" id="manual-' + id + '-point-input" name="manual-point">');
+              $('#' + id + '-input').before('<div class="map btn btn-default" style="cursor: pointer;" id="' + id + '-point-toggle">POINT</div></br><input type="text" title="Geometry text field" id="manual-' + id + '-point-input" name="manual-point">');
                 $('#manual-' + id + '-point-input').hide();
               $('#' + id + '-geojson-toggle').click(function () {
                 $(item).toggle();

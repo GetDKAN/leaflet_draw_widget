@@ -9,8 +9,8 @@ projects[geophp][subdir] = contrib
 
 libraries[leaflet_draw][type] = libraries
 libraries[leaflet_draw][download][type] = git
-libraries[leaflet_draw][download][url] = "https://github.com/Leaflet/Leaflet.draw.git"
-libraries[leaflet_draw][download][tag] = "v0.2.4"
+libraries[leaflet_draw][download][url] = "https://github.com/NuCivic/Leaflet.draw.git"
+libraries[leaflet_draw][download][branch] = "toolbar-accessibility"
 
 libraries[leaflet_core][type] = libraries
 libraries[leaflet_core][download][type] = git

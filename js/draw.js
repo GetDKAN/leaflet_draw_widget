@@ -87,7 +87,7 @@
 
       $('#' + id).after('<div id="' + id + '-geojson">' +
         '<label for="' + id + '-geojson-textarea">' + Drupal.t('Enter GeoJSON:') + '</label>' +
-        '<textarea class="text-full form-control form-textarea" id="' + id + '-geojson-textarea" cols="60" rows="10"></textarea>' +
+        '<textarea class="text-full form-control form-textarea" id="' + id + '-geojson-textarea" title="GeoJSON textarea field" cols="60" rows="10"></textarea>' +
       '</div>');
 
     // Set placeholder
@@ -105,7 +105,7 @@
 
     $('#' + id).after('<div id="' + id + '-points" class="">' +
       '<label for="' + id + '-points">' + Drupal.t('Points') + '</label>' +
-      '<input class="text-full form-control form-text" type="text" id="' + id + '-points-input"  placeholder="latitude, longitude;latitude, longitude; ..." "size="60" maxlength="255"> <a href="#add-point" class="map btn btn-default btn-add-point btn-primary" id="' + id +'-points-add">Add Points</a>' +
+      '<input class="text-full form-control form-text" type="text" id="' + id + '-points-input" title="Points text field" placeholder="latitude, longitude;latitude, longitude; ..." "size="60" maxlength="255"> <a href="#add-point" class="map btn btn-default btn-add-point btn-primary" id="' + id +'-points-add">Add Points</a>' +
     '</div>');
 
   // Update field's input when geojson input is updated.

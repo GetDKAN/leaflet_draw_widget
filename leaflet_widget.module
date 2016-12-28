@@ -293,6 +293,7 @@ function leaflet_widget_library() {
     ),
   );
 
+  $leaflet_image_path = $leaflet_core . '/dist/images';
   $libraries['leaflet_core'] = array(
     'title' => 'Leaflet (Leaflet Widget)',
     'version' => '0.7.3',
@@ -301,6 +302,7 @@ function leaflet_widget_library() {
     ),
     'js' => array(
       "$leaflet_core/dist/leaflet.js" => array(),
+      'if (!L.Icon.Default.imagePath) L.Icon.Default.imagePath = "/' . $leaflet_image_path . '"' => array('type' => 'inline'),
     ),
   );
 

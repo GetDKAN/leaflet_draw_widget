@@ -117,8 +117,7 @@
       }
       try {
         var latlng = L.latLng(point.split(','));
-        console.log(latlng);
-        var coordinates = LatLngToCoords(latlng);
+        var coordinates = LatLngToCoords(latlng, true);
         var geojsonFeature = {"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Point","coordinates":coordinates},"properties":[]}]}
         var write = JSON.stringify(geojsonFeature);
         var l  = L.geoJson(geojsonFeature).addTo(map);

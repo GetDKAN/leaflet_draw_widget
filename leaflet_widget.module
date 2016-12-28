@@ -293,7 +293,7 @@ function leaflet_widget_library() {
     ),
   );
 
-  $leaflet_image_path = $leaflet_core . '/dist/images';
+  $leaflet_image_path = $leaflet_core . '/dist/images/';
   $libraries['leaflet_core'] = array(
     'title' => 'Leaflet (Leaflet Widget)',
     'version' => '1.0.2',

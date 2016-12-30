@@ -172,6 +172,7 @@ function leaflet_widget_field_widget_form(&$form, &$form_state, $field, $instanc
 
       // Include javascript.
       $widget['#attached']['library'][] = array('leaflet_widget', 'draw');
+      $widget['#attached']['library'][] = array('system', 'ui.tabs');
 
       //Check if we need to add geographic areas
       if (isset($settings['geographic_areas']) && $settings['geographic_areas']) {
@@ -292,6 +293,7 @@ function leaflet_widget_library() {
     ),
   );
 
+  $leaflet_image_path = $leaflet_core . '/dist/images/';
   $libraries['leaflet_core'] = array(
     'title' => 'Leaflet (Leaflet Widget)',
     'version' => '1.0.2',
@@ -300,6 +302,7 @@ function leaflet_widget_library() {
     ),
     'js' => array(
       "$leaflet_core/dist/leaflet.js" => array(),
+      'if (!L.Icon.Default.imagePath) L.Icon.Default.imagePath = "/' . $leaflet_image_path . '"' => array('type' => 'inline'),
     ),
   );
 
@@ -334,7 +337,7 @@ function leaflet_widget_geojson_feature($wkt, $properties = array()) {
  */
 function leaflet_widget_leaflet_widget_base_layers() {
   return array(
-    'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png' => 'OSM Mapnik',
+    '//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png' => 'OSM Mapnik',
   );
 }
 

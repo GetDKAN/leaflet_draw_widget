@@ -15,5 +15,5 @@ libraries[leaflet_draw][download][tag] = "v0.4.9"
 # LEAFLET
 libraries[leaflet][type] = libraries
 libraries[leaflet][download][type] = git
-libraries[leaflet][download][url] = "https://github.com/Leaflet/Leaflet.git"
-libraries[leaflet][download][revision] = "7f11fdfbaeeeef900f8c40813e74d6682646804d"
+libraries[leaflet][download][url] = "https://github.com/NuCivic/Leaflet.git"
+libraries[leaflet][download][tag] = "v1.0.2-alt-marker-shadow-5258"

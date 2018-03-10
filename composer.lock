@@ -1,0 +1,541 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "12932b52b0fcc9fa8d50aa2c7079bc77",
+    "packages": [
+        {
+            "name": "bower-asset/leaflet",
+            "version": "v1.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Leaflet/Leaflet.git",
+                "reference": "ba6f97fff8647e724e4dfe66d2ed7da11f908989"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Leaflet/Leaflet/zipball/ba6f97fff8647e724e4dfe66d2ed7da11f908989",
+                "reference": "ba6f97fff8647e724e4dfe66d2ed7da11f908989",
+                "shasum": ""
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": [
+                    "dist/leaflet.css",
+                    "dist/leaflet-src.js"
+                ],
+                "bower-asset-ignore": [
+                    ".*",
+                    "CHANGELOG.json",
+                    "FAQ.md",
+                    "debug",
+                    "spec",
+                    "src",
+                    "build"
+                ]
+            },
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "description": "JavaScript library for mobile-friendly interactive maps",
+            "time": "2018-01-18T12:16:07+00:00"
+        },
+        {
+            "name": "bower-asset/leaflet.draw",
+            "version": "v0.4.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Leaflet/Leaflet.draw.git",
+                "reference": "b4e044487854f2c81cb6d0c089c152fa525e56d8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Leaflet/Leaflet.draw/zipball/b4e044487854f2c81cb6d0c089c152fa525e56d8",
+                "reference": "b4e044487854f2c81cb6d0c089c152fa525e56d8",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/leaflet": ">=1.0.0,<2.0.0"
+            },
+            "require-dev": {
+                "bower-asset/eslint": "~3.5.0",
+                "bower-asset/happen": "~0.3.1",
+                "bower-asset/jake": "~8.0.15",
+                "bower-asset/karma": ">=1.3.0,<2.0.0",
+                "bower-asset/karma-coverage": "~1.1.1",
+                "bower-asset/karma-mocha": "~1.2.0",
+                "bower-asset/mocha": "~3.1.2",
+                "bower-asset/uglify-js": "~2.7.3"
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": [
+                    "dist/leaflet.draw.js",
+                    "dist/leaflet.draw.css",
+                    "dist/images/spritesheet-2x.png",
+                    "dist/images/spritesheet.png",
+                    "dist/images/spritesheet.svg"
+                ],
+                "bower-asset-ignore": [
+                    "**/.*",
+                    "src",
+                    "doc",
+                    "examples",
+                    "test",
+                    "build",
+                    "spec",
+                    "*.md",
+                    "Gruntfile.js",
+                    "Jakefile.js",
+                    "package.json",
+                    "bower.json"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Vector drawing plugin for Leaflet",
+            "keywords": [
+                "client",
+                "draw",
+                "drawing",
+                "javascript",
+                "leaflet",
+                "maps",
+                "vector"
+            ],
+            "time": "2017-01-04T16:22:52+00:00"
+        },
+        {
+            "name": "composer/installers",
+            "version": "v1.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/composer/installers.git",
+                "reference": "049797d727261bf27f2690430d935067710049c2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/composer/installers/zipball/049797d727261bf27f2690430d935067710049c2",
+                "reference": "049797d727261bf27f2690430d935067710049c2",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^1.0"
+            },
+            "replace": {
+                "roundcube/plugin-installer": "*",
+                "shama/baton": "*"
+            },
+            "require-dev": {
+                "composer/composer": "1.0.*@dev",
+                "phpunit/phpunit": "^4.8.36"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "Composer\\Installers\\Plugin",
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Composer\\Installers\\": "src/Composer/Installers"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kyle Robinson Young",
+                    "email": "kyle@dontkry.com",
+                    "homepage": "https://github.com/shama"
+                }
+            ],
+            "description": "A multi-framework Composer library installer",
+            "homepage": "https://composer.github.io/installers/",
+            "keywords": [
+                "Craft",
+                "Dolibarr",
+                "Eliasis",
+                "Hurad",
+                "ImageCMS",
+                "Kanboard",
+                "Lan Management System",
+                "MODX Evo",
+                "Mautic",
+                "Maya",
+                "OXID",
+                "Plentymarkets",
+                "Porto",
+                "RadPHP",
+                "SMF",
+                "Thelia",
+                "WolfCMS",
+                "agl",
+                "aimeos",
+                "annotatecms",
+                "attogram",
+                "bitrix",
+                "cakephp",
+                "chef",
+                "cockpit",
+                "codeigniter",
+                "concrete5",
+                "croogo",
+                "dokuwiki",
+                "drupal",
+                "eZ Platform",
+                "elgg",
+                "expressionengine",
+                "fuelphp",
+                "grav",
+                "installer",
+                "itop",
+                "joomla",
+                "kohana",
+                "laravel",
+                "lavalite",
+                "lithium",
+                "magento",
+                "majima",
+                "mako",
+                "mediawiki",
+                "modulework",
+                "modx",
+                "moodle",
+                "osclass",
+                "phpbb",
+                "piwik",
+                "ppi",
+                "puppet",
+                "pxcms",
+                "reindex",
+                "roundcube",
+                "shopware",
+                "silverstripe",
+                "sydes",
+                "symfony",
+                "typo3",
+                "wordpress",
+                "yawik",
+                "zend",
+                "zikula"
+            ],
+            "time": "2017-12-29T09:13:20+00:00"
+        },
+        {
+            "name": "drupal/drupal",
+            "version": "7.57.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/drupal",
+                "reference": "7.57"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/drupal-7.57.zip",
+                "reference": "7.57",
+                "shasum": "f2a7071074bd19896ef9ac2ed6fa82eebc32e28d"
+            },
+            "type": "drupal-core",
+            "extra": {
+                "branch-alias": {
+                    "dev-7.x": "7.x-dev"
+                },
+                "drupal": {
+                    "version": "7.57",
+                    "datestamp": "1519237410",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/7/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Cottser",
+                    "homepage": "https://www.drupal.org/user/1167326"
+                },
+                {
+                    "name": "David_Rothstein",
+                    "homepage": "https://www.drupal.org/user/124982"
+                },
+                {
+                    "name": "Dries",
+                    "homepage": "https://www.drupal.org/user/1"
+                },
+                {
+                    "name": "Drupal",
+                    "homepage": "https://www.drupal.org/user/3"
+                },
+                {
+                    "name": "Fabianx",
+                    "homepage": "https://www.drupal.org/user/693738"
+                },
+                {
+                    "name": "Gábor Hojtsy",
+                    "homepage": "https://www.drupal.org/user/4166"
+                },
+                {
+                    "name": "alexpott",
+                    "homepage": "https://www.drupal.org/user/157725"
+                },
+                {
+                    "name": "catch",
+                    "homepage": "https://www.drupal.org/user/35733"
+                },
+                {
+                    "name": "cilefen",
+                    "homepage": "https://www.drupal.org/user/1850070"
+                },
+                {
+                    "name": "drumm",
+                    "homepage": "https://www.drupal.org/user/3064"
+                },
+                {
+                    "name": "effulgentsia",
+                    "homepage": "https://www.drupal.org/user/78040"
+                },
+                {
+                    "name": "larowlan",
+                    "homepage": "https://www.drupal.org/user/395439"
+                },
+                {
+                    "name": "lauriii",
+                    "homepage": "https://www.drupal.org/user/1078742"
+                },
+                {
+                    "name": "plach",
+                    "homepage": "https://www.drupal.org/user/183211"
+                },
+                {
+                    "name": "stefan.r",
+                    "homepage": "https://www.drupal.org/user/551886"
+                },
+                {
+                    "name": "webchick",
+                    "homepage": "https://www.drupal.org/user/24967"
+                },
+                {
+                    "name": "xjm",
+                    "homepage": "https://www.drupal.org/user/65776"
+                },
+                {
+                    "name": "yoroy",
+                    "homepage": "https://www.drupal.org/user/41502"
+                }
+            ],
+            "homepage": "https://www.drupal.org/project/drupal",
+            "support": {
+                "source": "http://cgit.drupalcode.org/drupal"
+            }
+        },
+        {
+            "name": "drupal/geofield",
+            "version": "1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/geofield",
+                "reference": "7.x-1.2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/geofield-7.x-1.2.zip",
+                "reference": "7.x-1.2",
+                "shasum": "f9f4a0a55dc18455f5159a100c6ac477154a1861"
+            },
+            "require": {
+                "drupal/drupal": "~7.0",
+                "drupal/geophp": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "7.x-1.2",
+                    "datestamp": "1372735859",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/7/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Brandonian",
+                    "homepage": "https://www.drupal.org/user/77766"
+                },
+                {
+                    "name": "bdragon",
+                    "homepage": "https://www.drupal.org/user/53081"
+                },
+                {
+                    "name": "chachasikes",
+                    "homepage": "https://www.drupal.org/user/50674"
+                },
+                {
+                    "name": "davidseth",
+                    "homepage": "https://www.drupal.org/user/254857"
+                },
+                {
+                    "name": "itamair",
+                    "homepage": "https://www.drupal.org/user/1179076"
+                },
+                {
+                    "name": "phayes",
+                    "homepage": "https://www.drupal.org/user/47098"
+                },
+                {
+                    "name": "plopesc",
+                    "homepage": "https://www.drupal.org/user/282415"
+                },
+                {
+                    "name": "zzolo",
+                    "homepage": "https://www.drupal.org/user/147331"
+                }
+            ],
+            "description": "Stores geographic and location data (points, lines, and polygons).",
+            "homepage": "https://www.drupal.org/project/geofield",
+            "support": {
+                "source": "http://cgit.drupalcode.org/geofield"
+            }
+        },
+        {
+            "name": "drupal/geophp",
+            "version": "1.7.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/geophp",
+                "reference": "7.x-1.7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/geophp-7.x-1.7.zip",
+                "reference": "7.x-1.7",
+                "shasum": "26c379024f2fbcc71ab7a8ced42c8db51e973c80"
+            },
+            "require": {
+                "drupal/drupal": "~7.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "7.x-1.7",
+                    "datestamp": "1352084822",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/7/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Brandonian",
+                    "homepage": "https://www.drupal.org/user/77766"
+                },
+                {
+                    "name": "phayes",
+                    "homepage": "https://www.drupal.org/user/47098"
+                },
+                {
+                    "name": "plopesc",
+                    "homepage": "https://www.drupal.org/user/282415"
+                }
+            ],
+            "description": "Wraps the geoPHP library: advanced geometry operations in PHP",
+            "homepage": "https://www.drupal.org/project/geophp",
+            "support": {
+                "source": "http://cgit.drupalcode.org/geophp"
+            }
+        },
+        {
+            "name": "fxp/composer-asset-plugin",
+            "version": "v1.4.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fxpio/composer-asset-plugin.git",
+                "reference": "61352d99940d2b2392a5d2db83b8c0ef5faf222a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fxpio/composer-asset-plugin/zipball/61352d99940d2b2392a5d2db83b8c0ef5faf222a",
+                "reference": "61352d99940d2b2392a5d2db83b8c0ef5faf222a",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^1.0",
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "composer/composer": "^1.4.0"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "Fxp\\Composer\\AssetPlugin\\FxpAssetPlugin",
+                "branch-alias": {
+                    "dev-master": "1.4-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Fxp\\Composer\\AssetPlugin\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "François Pluchino",
+                    "email": "francois.pluchino@gmail.com"
+                }
+            ],
+            "description": "NPM/Bower Dependency Manager for Composer",
+            "homepage": "https://github.com/fxpio/composer-asset-plugin",
+            "keywords": [
+                "asset",
+                "bower",
+                "composer",
+                "dependency manager",
+                "nodejs",
+                "npm",
+                "package"
+            ],
+            "time": "2017-10-20T06:53:56+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}

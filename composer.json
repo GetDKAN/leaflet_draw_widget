@@ -1,0 +1,19 @@
+{
+    "name": "getdkan/leaflet_draw_widget",
+    "description": "Temporary home for leaflet_widget using Leaflet.draw 2.x",
+    "version": "1.x-dev",
+    "type": "drupal-module",
+    "require": {
+        "fxp/composer-asset-plugin": "^1.4",
+        "composer/installers": "~1.0",
+        "drupal/geofield": "1.2",
+        "drupal/geophp": "1.7",
+        "bower-asset/leaflet.draw": "0.4.9"
+    },
+    "repositories": {
+        "drupal": {
+            "type": "composer",
+            "url": "https://packages.drupal.org/7"
+        }
+    }
+}
